@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Value.Fixed;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
+import com.badlogic.gdx.utils.Align;
 
 /** A group with a single child that sizes and positions the child using constraints. This provides layout similar to a
  * {@link Table} with a single cell but is more lightweight.
@@ -597,7 +597,7 @@ public class Container<T extends Actor> extends WidgetGroup {
 	public float getPrefWidth () {
 		float v = prefWidth.get(actor);
 		if (background != null) v = Math.max(v, background.getMinWidth());
-		return v + padLeft.get(this) + padRight.get(this);
+		return Math.max(getMinWidth(), v + padLeft.get(this) + padRight.get(this));
 	}
 
 	public Value getPrefHeightValue () {
@@ -607,7 +607,7 @@ public class Container<T extends Actor> extends WidgetGroup {
 	public float getPrefHeight () {
 		float v = prefHeight.get(actor);
 		if (background != null) v = Math.max(v, background.getMinHeight());
-		return v + padTop.get(this) + padBottom.get(this);
+		return Math.max(getMinHeight(), v + padTop.get(this) + padBottom.get(this));
 	}
 
 	public Value getMaxWidthValue () {

@@ -44,7 +44,7 @@ public class BuildScriptHelper {
 		space(wr);
 		write(wr, "version = '1.0'");
 		write(wr, "ext {");
-		write(wr, "appName = '%APP_NAME%'");
+		write(wr, "appName = \"%APP_NAME%\"");
 		write(wr, "gdxVersion = '" + DependencyBank.libgdxVersion + "'");
 		write(wr, "roboVMVersion = '" + DependencyBank.roboVMVersion + "'");
 		write(wr, "box2DLightsVersion = '" + DependencyBank.box2DLightsVersion + "'");
@@ -82,7 +82,7 @@ public class BuildScriptHelper {
 			if (dep.getDependencies(project) == null) continue;
 			for (String moduleDependency : dep.getDependencies(project)) {
 				if (moduleDependency == null) continue;
-				if ((project.equals(ProjectType.ANDROID) || project.equals(ProjectType.IOS)) && moduleDependency.contains("native")) {
+				if (project.equals(ProjectType.ANDROID) && moduleDependency.contains("native")) {
 					write(wr, "natives \"" + moduleDependency + "\"");
 				} else {
 					write(wr, "compile \"" + moduleDependency + "\"");
@@ -93,7 +93,7 @@ public class BuildScriptHelper {
 	}
 
 	private static void addConfigurations(ProjectType project, BufferedWriter wr) throws IOException {
-		if (project.equals(ProjectType.IOS) || project.equals(ProjectType.ANDROID)) {
+		if (project.equals(ProjectType.ANDROID)) {
 			write(wr, "configurations { natives }");
 		}
 	}

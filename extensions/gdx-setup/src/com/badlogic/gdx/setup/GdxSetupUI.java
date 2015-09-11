@@ -49,6 +49,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -131,6 +133,14 @@ public class GdxSetupUI extends JFrame {
 		final String pack = ui.form.packageText.getText().trim();
 		if (pack.length() == 0) {
 			JOptionPane.showMessageDialog(this, "Please enter a package name.");
+			return;
+		}
+		Pattern pattern = Pattern.compile("[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+[0-9a-z_]");
+		Matcher matcher = pattern.matcher(pack);
+		boolean matches = matcher.matches();
+
+		if (!matches) {
+			JOptionPane.showMessageDialog(this, "Invalid package name");
 			return;
 		}
 
@@ -248,7 +258,7 @@ public class GdxSetupUI extends JFrame {
 					log("To import to Intellij IDEA: File -> Open -> YourProject.ipr");
 				} else {
 					log("To import in Eclipse: File -> Import -> Gradle -> Gradle Project");
-					log("To import to Intellij IDEA: File -> Import -> build.gradle");
+					log("To import to Intellij IDEA: File -> Open -> build.gradle");
 					log("To import to NetBeans: File -> Open Project...");
 				}
 				SwingUtilities.invokeLater(new Runnable() {
@@ -428,7 +438,11 @@ public class GdxSetupUI extends JFrame {
 		JTextField destinationText = new JTextField(new File("test").getAbsolutePath());
 		SetupButton destinationButton = new SetupButton("Browse");
 		JLabel sdkLocationLabel = new JLabel("Android SDK");
-		JTextField sdkLocationText = new JTextField("C:\\Path\\To\\Your\\Sdk");
+		JTextField sdkLocationText = new JTextField(
+				System.getProperty("os.name").contains("Windows")
+				? "C:\\Path\\To\\Your\\Sdk"
+				: "/path/to/your/sdk"
+		);
 		SetupButton sdkLocationButton = new SetupButton("Browse");
 
 		JPanel subProjectsPanel = new JPanel(new GridLayout());

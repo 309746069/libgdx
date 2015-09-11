@@ -51,6 +51,7 @@
 	<!-- assets/loaders/resolvers -->		
 		<include name="assets/loaders/resolvers/ExternalFileHandleResolver.java"/>
 		<include name="assets/loaders/resolvers/InternalFileHandleResolver.java"/>
+		<include name="assets/loaders/resolvers/ClasspathFileHandleResolver.java"/>
 		<include name="assets/loaders/resolvers/ResolutionFileResolver.java"/> <!-- Emulated -->
 
 	<!-- audio -->		
@@ -69,6 +70,7 @@
 		<include name="graphics/Colors.java"/>
 		<include name="graphics/Cubemap.java"/>
 		<include name="graphics/CubemapData.java"/>
+		<include name="graphics/Cursor.java"/>
 		<include name="graphics/FPSLogger.java"/>
 		<include name="graphics/GL20.java"/>
 		<include name="graphics/GL30.java"/>
@@ -91,6 +93,7 @@
 		<include name="graphics/g2d/BitmapFontCache.java"/>
 		<include name="graphics/g2d/CpuSpriteBatch.java"/>
 		<exclude name="graphics/g2d/Gdx2DPixmap.java"/> <!-- Reason: JNI -->
+		<include name="graphics/g2d/GlyphLayout.java"/>
 		<include name="graphics/g2d/NinePatch.java"/>
 		<include name="graphics/g2d/ParticleEffect.java"/> <!-- Emulated: Not supporting save -->
 		<include name="graphics/g2d/ParticleEffectPool.java"/>
@@ -129,6 +132,9 @@
 		<include name="graphics/g3d/attributes/FloatAttribute.java"/>
 		<include name="graphics/g3d/attributes/IntAttribute.java"/>
 		<include name="graphics/g3d/attributes/TextureAttribute.java"/>
+		<include name="graphics/g3d/attributes/DirectionalLightsAttribute.java"/>
+		<include name="graphics/g3d/attributes/PointLightsAttribute.java"/>
+		<include name="graphics/g3d/attributes/SpotLightsAttribute.java"/>
 		
 	<!-- graphics/g3d/decals -->
 		<include name="graphics/g3d/decals/CameraGroupStrategy.java"/>
@@ -213,6 +219,8 @@
 		<include name="graphics/glutils/FloatFrameBuffer.java"/>
 		<include name="graphics/glutils/FloatTextureData.java"/>
 		<include name="graphics/glutils/FrameBuffer.java"/>
+		<include name="graphics/glutils/FrameBufferCubemap.java"/>
+		<include name="graphics/glutils/GLFrameBuffer.java"/>
 		<include name="graphics/glutils/ImmediateModeRenderer.java"/>
 		<include name="graphics/glutils/ImmediateModeRenderer10.java"/>
 		<include name="graphics/glutils/ImmediateModeRenderer20.java"/>
@@ -235,7 +243,7 @@
 		<include name="graphics/profiling/GL20Profiler.java"/>
 		<include name="graphics/profiling/GL30Profiler.java"/>
 		<include name="graphics/profiling/GLProfiler.java"/>
-		
+		<include name="graphics/profiling/GLErrorListener.java"/> <!-- Emulated -->
 						
 	<!-- input -->
 		<include name="input/GestureDetector.java"/>
@@ -282,10 +290,13 @@
 		<include name="maps/tiled/renderers/OrthoCachedTiledMapRenderer.java"/>
 		<include name="maps/tiled/renderers/OrthogonalTiledMapRenderer.java"/>
 
-	<!-- maps/tiles/tiles -->
+	<!-- maps/tiled/tiles -->
 		<include name="maps/tiled/tiles/AnimatedTiledMapTile.java"/>
 		<include name="maps/tiled/tiles/StaticTiledMapTile.java"/>
 	
+	<!-- maps/tiled/objects -->
+		<include name="maps/tiled/objects/TiledMapTileMapObject.java"/>	
+		
 	<!-- math -->
 		<include name="math/Affine2.java"/>
 		<include name="math/Bezier.java"/>

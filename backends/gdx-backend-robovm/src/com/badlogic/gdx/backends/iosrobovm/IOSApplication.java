@@ -23,6 +23,7 @@ import org.robovm.apple.foundation.Foundation;
 import org.robovm.apple.foundation.NSMutableDictionary;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
+import org.robovm.apple.foundation.NSThread;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 import org.robovm.apple.uikit.UIApplicationLaunchOptions;
@@ -350,7 +351,7 @@ public class IOSApplication implements Application {
 	@Override
 	public void debug (String tag, String message, Throwable exception) {
 		if (logLevel >= LOG_DEBUG) {
-			Foundation.log("%@", new NSString("[error] " + tag + ": " + message));
+			Foundation.log("%@", new NSString("[debug] " + tag + ": " + message));
 			exception.printStackTrace();
 		}
 	}
@@ -427,7 +428,7 @@ public class IOSApplication implements Application {
 
 	@Override
 	public void exit () {
-		System.exit(0);
+		NSThread.exit();
 	}
 
 	@Override

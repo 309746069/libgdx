@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,6 +59,7 @@ import com.badlogic.gdx.tests.DecalTest;
 import com.badlogic.gdx.tests.EdgeDetectionTest;
 import com.badlogic.gdx.tests.FilterPerformanceTest;
 import com.badlogic.gdx.tests.FrameBufferTest;
+import com.badlogic.gdx.tests.GLProfilerErrorTest;
 import com.badlogic.gdx.tests.GestureDetectorTest;
 import com.badlogic.gdx.tests.GroupCullingTest;
 import com.badlogic.gdx.tests.GroupFadeTest;
@@ -297,7 +298,7 @@ public class GwtTestWrapper extends GdxTest {
 		public boolean isKeyPressed (int key) {
 			return input.isKeyPressed(key);
 		}
-		
+
 		@Override
 		public boolean isKeyJustPressed (int key) {
 			return input.isKeyJustPressed(key);
@@ -409,10 +410,6 @@ public class GwtTestWrapper extends GdxTest {
 		public void setCursorPosition (int x, int y) {
 			setCursorPosition(x, y);
 		}
-
-		@Override
-		public void setCursorImage (Pixmap pixmap, int xHotspot, int yHotspot) {
-		}
 	}
 
 	interface Instancer {
@@ -516,6 +513,10 @@ public class GwtTestWrapper extends GdxTest {
 		}, new Instancer() {
 			public GdxTest instance () {
 				return new GestureDetectorTest();
+			}
+		}, new Instancer() {
+			public GdxTest instance () {
+				return new GLProfilerErrorTest();
 			}
 		}, new Instancer() {
 			public GdxTest instance () {

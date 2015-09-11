@@ -25,9 +25,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Value.Fixed;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.Layout;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
@@ -50,6 +50,7 @@ public class Table extends WidgetGroup {
 	static private float[] columnWeightedWidth, rowWeightedHeight;
 
 	private int columns, rows;
+	private boolean implicitEndRow;
 
 	private final Array<Cell> cells = new Array(4);
 	private final Cell cellDefaults;
@@ -193,6 +194,13 @@ public class Table extends WidgetGroup {
 		Cell<T> cell = obtainCell();
 		cell.actor = actor;
 
+		// The row was ended for layout, not be the user, so revert it.
+		if (implicitEndRow) {
+			implicitEndRow = false;
+			rows--;
+			cells.peek().endRow = false;
+		}
+
 		Array<Cell> cells = this.cells;
 		int cellCount = cells.size;
 		if (cellCount > 0) {
@@ -282,7 +290,11 @@ public class Table extends WidgetGroup {
 	}
 
 	public boolean removeActor (Actor actor) {
-		if (!super.removeActor(actor)) return false;
+		return removeActor(actor, true);
+	}
+
+	public boolean removeActor (Actor actor, boolean unfocus) {
+		if (!super.removeActor(actor, unfocus)) return false;
 		Cell cell = getCell(actor);
 		if (cell != null) cell.actor = null;
 		return true;
@@ -302,6 +314,7 @@ public class Table extends WidgetGroup {
 		columns = 0;
 		if (rowDefaults != null) cellPool.free(rowDefaults);
 		rowDefaults = null;
+		implicitEndRow = false;
 
 		super.clearChildren();
 	}
@@ -692,6 +705,16 @@ public class Table extends WidgetGroup {
 		return columns;
 	}
 
+	/** Returns the height of the specified row. */
+	public float getRowHeight (int rowIndex) {
+		return rowHeight[rowIndex];
+	}
+
+	/** Returns the width of the specified column. */
+	public float getColumnWidth (int columnIndex) {
+		return columnWidth[columnIndex];
+	}
+
 	private float[] ensureSize (float[] array, int size) {
 		if (array == null || array.length < size) return new float[size];
 		for (int i = 0, n = array.length; i < n; i++)
@@ -741,7 +764,12 @@ public class Table extends WidgetGroup {
 		Array<Cell> cells = this.cells;
 		int cellCount = cells.size;
 
-		if (cellCount > 0 && !cells.peek().endRow) endRow();
+		// Implicitly End the row for layout purposes.
+		if (cellCount > 0 && !cells.peek().endRow) {
+			endRow();
+			implicitEndRow = true;
+		} else
+			implicitEndRow = false;
 
 		int columns = this.columns, rows = this.rows;
 		float[] columnMinWidth = this.columnMinWidth = ensureSize(this.columnMinWidth, columns);
@@ -1195,6 +1223,11 @@ public class Table extends WidgetGroup {
 			shapes.setColor(debugRect.color);
 			shapes.rect(x + debugRect.x, y + debugRect.y, debugRect.width, debugRect.height);
 		}
+	}
+
+	/** @return The skin that was passed to this table in its constructor, or null if none was given. */
+	public Skin getSkin () {
+		return skin;
 	}
 
 	/** @author Nathan Sweet */

@@ -47,7 +47,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService.AndroidWallpaperEngine;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.IntSet;
 import com.badlogic.gdx.utils.Pool;
 
@@ -96,7 +95,8 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 	};
 
 	public static final int NUM_TOUCHES = 20;
-
+	public static final int SUPPORTED_KEYS = 260;
+	
 	ArrayList<OnKeyListener> keyListeners = new ArrayList();
 	ArrayList<KeyEvent> keyEvents = new ArrayList();
 	ArrayList<TouchEvent> touchEvents = new ArrayList();
@@ -109,9 +109,9 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 	int[] realId = new int[NUM_TOUCHES];
 	final boolean hasMultitouch;
 	private int keyCount = 0;
-	private boolean[] keys = new boolean[256];
+	private boolean[] keys = new boolean[SUPPORTED_KEYS];
 	private boolean keyJustPressed = false;
-	private boolean[] justPressedKeys = new boolean[256];
+	private boolean[] justPressedKeys = new boolean[SUPPORTED_KEYS];
 	private SensorManager manager;
 	public boolean accelerometerAvailable = false;
 	private final float[] accelerometerValues = new float[3];
@@ -278,7 +278,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 		if (key == Input.Keys.ANY_KEY) {
 			return keyCount > 0;
 		}
-		if (key < 0 || key > 255) {
+		if (key < 0 || key >= SUPPORTED_KEYS) {
 			return false;
 		}
 		return keys[key];
@@ -289,7 +289,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 		if (key == Input.Keys.ANY_KEY) {
 			return keyJustPressed;
 		}
-		if (key < 0 || key > 255) {
+		if (key < 0 || key >= SUPPORTED_KEYS) {
 			return false;
 		}
 		return justPressedKeys[key];
@@ -477,7 +477,8 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 			char character = (char)e.getUnicodeChar();
 			// Android doesn't report a unicode char for back space. hrm...
 			if (keyCode == 67) character = '\b';
-
+			if (e.getKeyCode() >= SUPPORTED_KEYS) return false;
+			
 			switch (e.getAction()) {
 			case android.view.KeyEvent.ACTION_DOWN:
 				event = usedKeyEvents.obtain();
@@ -817,10 +818,6 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 
 	@Override
 	public void setCursorPosition (int x, int y) {
-	}
-
-	@Override
-	public void setCursorImage (Pixmap pixmap, int xHotspot, int yHotspot) {
 	}
 
 	@Override
